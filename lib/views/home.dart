@@ -4,6 +4,7 @@ import 'package:kioxkefinal/components/drawer.dart';
 import 'package:kioxkefinal/models/functions.dart';
 import 'package:kioxkefinal/models/viewStyles.dart';
 import 'package:kioxkefinal/views/detalhes.dart';
+import 'package:kioxkefinal/views/tabs.dart';
 
 
 class HomeView extends StatefulWidget {
@@ -15,6 +16,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final PageController _pageviewController = new PageController();
   int _selectedIndex = 0;
    
   @override
@@ -22,19 +24,64 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
         backgroundColor: primaryColor,
        title: Text("Kiosxke"),
        leading:  IconButton(icon: Icon(Icons.sort), onPressed: () => _scaffoldKey.currentState.openDrawer(),),
-        actions: [
+       actions: [
            IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
-        ]
+        ],
       ),
-      body: SingleChildScrollView(
+      body: PageView(
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection:Axis.horizontal,
+        controller: _pageviewController,
+        children: [
+          _homeView(),
+          Tabs()
+        ],
+      ),
+
+     bottomNavigationBar: BottomNavigationBar(
+       type: BottomNavigationBarType.fixed,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          title: Text('Inicio'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book),
+          title: Text('Livros'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.library_books),
+          title: Text('Revistas'),
+        ),
+         BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark_border),
+          title: Text('Jornais'),
+        ),
+         BottomNavigationBarItem(
+          icon: Icon(Icons.chrome_reader_mode),
+          title: Text('BD'),
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: primaryColor,
+      onTap: _onItemTapped,
+    ),
+     drawer: DrawerPage(),
+    );
+  }
+
+Widget _homeView(){
+  return SingleChildScrollView(
         child:Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-           pageTitle("Detaques",context),
+           pageTitle("Destaques",context),
            Container(
             width: MediaQuery.of(context).size.width,
             height: 240,
@@ -97,40 +144,8 @@ class _HomeViewState extends State<HomeView> {
        ],
         )
       )
-    ),
-
-
-     bottomNavigationBar: BottomNavigationBar(
-       type: BottomNavigationBarType.fixed,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Inicio'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book),
-          title: Text('Livros'),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.library_books),
-          title: Text('Revistas'),
-        ),
-         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark_border),
-          title: Text('Jornais'),
-        ),
-         BottomNavigationBarItem(
-          icon: Icon(Icons.chrome_reader_mode),
-          title: Text('BD'),
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: primaryColor,
-      onTap: _onItemTapped,
-    ),
-     drawer: DrawerPage(),
     );
-  }
+}
 
 
  Widget _blovk(String titulo,String imageUrl,String autor,String likes,String urlBook,String preco,String descricao,String id){
@@ -249,16 +264,11 @@ class _HomeViewState extends State<HomeView> {
                 ),
               
                  Row(
-                   mainAxisAlignment: MainAxisAlignment.end,
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                    crossAxisAlignment: CrossAxisAlignment.end,
                    children: [
 
-                Container(
-                  height: 30,
-                  padding: EdgeInsets.all(5),
-                  alignment: Alignment.centerRight,
-                  child: IconButton(icon:Icon(Icons.comment,size: 25, color: primaryColor,), onPressed: (){})
-                ),
+                Text("$preco"),
                 Container(
                   height: 30,
                   padding: EdgeInsets.all(5),
@@ -285,6 +295,7 @@ class _HomeViewState extends State<HomeView> {
 void _onItemTapped(int index) {
   setState(() {
     _selectedIndex = index;
+    _pageviewController.jumpToPage(index);
   });
 }
 

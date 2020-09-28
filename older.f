@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:epub_viewer/epub_viewer.dart';
@@ -26,18 +27,23 @@ class _DatalhesState extends State<Datalhes> {
    double progressInt = 0;
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   Future<String> _path;
 
   String fileSystem ="";
-  String precoProd = "";
+  
+  bool isFavorite = false;
+  bool isOnList = false;
+  String precoProd = '';
+
    @override
   void initState() {
     super.initState();
+
    checkDownload(widget.id+"book");
 
-       FlutterMoneyFormatter precoProduto = FlutterMoneyFormatter(amount: double.parse(widget.preco));
+    FlutterMoneyFormatter precoProduto = FlutterMoneyFormatter(amount: double.parse(widget.preco));
     precoProd = precoProduto.output.nonSymbol;
+    
   }
 
   @override
@@ -48,7 +54,7 @@ class _DatalhesState extends State<Datalhes> {
         centerTitle: true,
        title: Text("Detalhes"),
         actions: [
-           IconButton(icon: Icon(Icons.favorite_border), onPressed: () {}),
+           IconButton(icon: Icon(isFavorite?Icons.favorite:Icons.favorite_border,color: isFavorite?Colors.red: Colors.white,), onPressed: isFavoriteFunt),
            IconButton(icon: Icon(Icons.share), onPressed: () {}),
         ]
       ),
@@ -103,8 +109,10 @@ class _DatalhesState extends State<Datalhes> {
                Container(
                   padding: EdgeInsets.all(5),
                   alignment: Alignment.centerLeft,
-                  child: Text( ( int.parse(widget.preco) <= 0?"Gratuito":precoProd+" AOA"),
-                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
+                  child:  Expanded(
+                  child: Text( (double.parse(widget.preco) <= 0?"Gratuito":precoProd+" AOA"),
+                  style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
+                 ),
                 ),
                SizedBox(
                  height:5,
@@ -114,12 +122,13 @@ class _DatalhesState extends State<Datalhes> {
                    crossAxisAlignment: CrossAxisAlignment.end,
                    children: [
 
-                   OutlineButton(
+                  OutlineButton(
                     highlightedBorderColor: primaryColor,
-                    child:Text("Adiconar +"),
-                    onPressed:(){},
-                    shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))
+                    child: isOnList?Text("Minha Lista"):Text("Adiconar +"),
+                    onPressed:isOnlistFunt
+                    ,shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))
                   ),
+
                   idDownloaded==false?
                   FlatButton(
                    padding: EdgeInsets.zero,
@@ -261,29 +270,45 @@ class _DatalhesState extends State<Datalhes> {
    }
   
   
-  
   openBook(String src) async{
     if (src.isNotEmpty) {
-        EpubViewer.setConfig(
-                identifier: 'androidBook',
-                themeColor: Theme.of(context).accentColor,
-                scrollDirection: EpubScrollDirection.HORIZONTAL,
-                enableTts: false,
-                allowSharing: true,
-              );
+    print("linl->"+src);
+    
+    String plat= Platform.isAndroid?'androidBook':'iosBook';
 
-            EpubViewer.open(
-            src,lastLocation:EpubLocator.fromJson({
-              "bookId": "2239",
-              "href": "/OEBPS/ch06.xhtml",
-              "created": 1539934158390,
-              "locations": {
-                "cfi": "epubcfi(/0!/4/4[simple_book]/2/2/6)"
-              }
-            }), // first page will open up if the value is null
-          );
-    }
+   EpubViewer.setConfig(
+        identifier: plat,
+        themeColor: Theme.of(context).accentColor,
+        scrollDirection: EpubScrollDirection.VERTICAL,
+        enableTts: false,
+        allowSharing: true,
+      );
+
+    EpubViewer.open(
+    src,lastLocation:EpubLocator.fromJson({
+      "bookId": "2239",
+      "href": "/OEBPS/ch06.xhtml",
+      "created": 1539934158390,
+      "locations": {
+        "cfi": "epubcfi(/0!/4/4[simple_book]/2/2/6)"
+      }
+    }), // first page will open up if the value is null
+  );
+        }
 
   }
+  
+  void isFavoriteFunt(){
+   setState(() {
+     isFavorite = !isFavorite;
+   });
+  }
 
-}
+  void isOnlistFunt(){
+   setState(() {
+     isOnList = !isOnList;
+   });
+  }
+  
+  
+  }

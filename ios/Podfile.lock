@@ -13,6 +13,8 @@ PODS:
   - esys_flutter_share (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_money_formatter (0.0.1):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -43,6 +45,7 @@ DEPENDENCIES:
   - epub_viewer (from `.symlinks/plugins/epub_viewer/ios`)
   - esys_flutter_share (from `.symlinks/plugins/esys_flutter_share/ios`)
   - Flutter (from `Flutter`)
+  - flutter_money_formatter (from `.symlinks/plugins/flutter_money_formatter/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
@@ -69,6 +72,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/esys_flutter_share/ios"
   Flutter:
     :path: Flutter
+  flutter_money_formatter:
+    :path: ".symlinks/plugins/flutter_money_formatter/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   path_provider:
@@ -86,6 +91,7 @@ SPEC CHECKSUMS:
   epub_viewer: 6d93e46357574cce7bbd8b66f8d3e21d532fbfa5
   esys_flutter_share: 403498dab005b36ce1f8d7aff377e81f0621b0b4
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_money_formatter: d0d18ddc5be333fad8d09964d741b59fa11a91dc
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   FontBlaster: 127aa66419478d1c62926c7fdb39841633344a45

@@ -59,7 +59,7 @@ class _DownloadAlertState extends State<DownloadAlert> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                'Downloading...',
+                'Transferindo...',
                 style: TextStyle(
                   fontSize: 15.0,
                   fontWeight: FontWeight.bold,
